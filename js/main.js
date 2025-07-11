@@ -78,6 +78,16 @@ $(document).ready(function () {
     }
   });
 
+  // Logout
+  const logoutBtn = document.getElementById('logout-btn');
+  console.log(logoutBtn)
+  if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+      });
+  }
+
 });
 
   async function deleteWaiter (waiter_id) {
