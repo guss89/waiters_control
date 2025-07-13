@@ -49,7 +49,7 @@
                 <div class="flex border-b">
                     <button data-tab="tab1" class="tab-btn mr-2 text-left px-4 py-3 hover:bg-orange-500 border-l-4 border-transparent">Control Empleados</button>
                     <button data-tab="tab2" class="tab-btn mr-2 text-left px-4 py-3 hover:bg-orange-500 border-l-4 border-transparent">Comentarios</button>
-                    <!--  <button data-tab="tab3" class="tab-btn w-full text-left px-4 py-3 hover:bg-orange-500 border-l-4 border-transparent">Calificación por Pregunta</button> -->
+                    <button data-tab="tab3" class="tab-btn text-left px-4 py-3 hover:bg-orange-500 border-l-4 border-transparent">Calificación por Pregunta</button>
                 </div>
 
                 <!-- Contenido de cada tab -->
@@ -93,17 +93,21 @@
                         </div>
                     </div>
                     <div class="tab-content hidden" id="tab2">
-                        <div class="h-80 overflow-auto">
-                            <h2 class="text-xl font-semibold mb-2">Configuración</h2>
+                        <div class="h-[500px] overflow-auto">
+                            <h2 class="text-xl font-semibold mb-2">Comentarios</h2>
                             <div id="comments-container" class="space-y-4">
                                 <!-- Aquí se insertan las cards dinámicamente -->
                             </div>
                         </div>
                     </div>
-                    <!--  <div class="tab-content hidden" id="tab3">
-                        <h2 class="text-xl font-semibold mb-2">Notificaciones</h2>
-                        <p>Administración de notificaciones.</p>
-                    </div> -->
+                    <div class="tab-content hidden" id="tab3">
+                        <div class="h-[600px] overflow-auto">
+                            <h2 class="text-xl font-semibold mb-2">Comentarios</h2>
+                            <div id="questions-container" class="space-y-4">
+                                <!-- Aquí se insertan las cards dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -13,10 +13,10 @@ $(document).ready(function () {
 
   const token = localStorage.getItem('token');
 
-  /*if (!token) {
+  if (!token) {
     window.location.href = 'login.html';
     return;
-  }*/
+  }
 
   /** Load datatable */
   const waiterTable = $('#waiters').DataTable({
@@ -125,7 +125,8 @@ $(document).ready(function () {
     tabButtons[0].click();
 
     //carga de comentarios
-    cargarComentarios();
+    loadComments();
+    loadQuestions();
 });
 
   async function deleteWaiter (waiter_id) {
@@ -174,38 +175,78 @@ $(document).ready(function () {
       }
   }
 
-  async function cargarComentarios() {
-      try {
-        const res = await fetch('https://api.dev-xen.com/comments/');
-        if (!res.ok) throw new Error("No se pudo obtener los comentarios");
-        const comentarios = await res.json();
+  async function loadComments() {
+    try {
+      const res = await fetch('https://api.dev-xen.com/comments/');
+      if (!res.ok) throw new Error("No se pudo obtener los comentarios");
+      const comentarios = await res.json();
 
-        const container = document.getElementById('comments-container');
-        container.innerHTML = '';
+      const container = document.getElementById('comments-container');
+      container.innerHTML = '';
 
-        comentarios.forEach(comment => {
-          const card = document.createElement('div');
-          card.className = 'bg-white p-4 rounded shadow';
+      comentarios.forEach(comment => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-4 rounded shadow';
 
-          /*card.innerHTML = `
-            <div class="text-gray-700 font-semibold mb-1">💬 Usuario: ${comment.client?.name || 'Anónimo'}</div>
-            <div class="text-sm text-gray-500 mb-2">🕒 ${comment.created_at || 'Fecha desconocida'}</div>
-            <hr class="mb-2">
-            <p class="text-gray-800">${comment.description}</p>
-          `;*/
+        /*card.innerHTML = `
+          <div class="text-gray-700 font-semibold mb-1">💬 Usuario: ${comment.client?.name || 'Anónimo'}</div>
+          <div class="text-sm text-gray-500 mb-2">🕒 ${comment.created_at || 'Fecha desconocida'}</div>
+          <hr class="mb-2">
+          <p class="text-gray-800">${comment.description}</p>
+        `;*/
 
-          card.innerHTML = `
-            <div class="text-sm text-gray-500 mb-2">💬 Comentario # ${comment.id }</div>
-            <hr class="mb-2">
-            <p class="text-gray-800">${comment.description}</p>
-          `;
+        card.innerHTML = `
+          <div class="text-sm text-gray-500 mb-2">💬 Comentario # ${comment.id }</div>
+          <hr class="mb-2">
+          <p class="text-gray-800">${comment.description}</p>
+        `;
 
-          container.appendChild(card);
-        });
+        container.appendChild(card);
+      });
 
-      } catch (err) {
-        console.error(err);
-        document.getElementById('comments-container').innerHTML =
-          `<p class="text-red-500">Error al cargar comentarios.</p>`;
-      }
+    } catch (err) {
+      console.error(err);
+      document.getElementById('comments-container').innerHTML =
+        `<p class="text-red-500">Error al cargar comentarios.</p>`;
     }
+  }
+
+  async function loadQuestions() {
+    try {
+      const res = await fetch('https://api.dev-xen.com/answers/avg/all');
+      if (!res.ok) throw new Error("No se pudo obtener los comentarios");
+      const questions = await res.json();
+
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      questions.forEach(question => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-4 rounded shadow';
+
+        let rankText = "";
+        if(question.promedio_relativo < 26){
+          rankText = "Malo"
+        }else if(question.promedio_relativo < 51){
+          rankText = "Regular"
+        }else if( question.promedio_relativo < 76){
+          rankText = "Bueno"
+        }else{
+          rankText = "Excelente"
+        }
+
+        card.innerHTML = `
+          <div class="text-sm text-gray-500 mb-2">💬 Pregunta </div>
+          <hr class="mb-2">
+          <p class="text-gray-800">${question.pregunta} ${question.promedio_relativo}%  -- ${rankText}</p>
+        `;
+
+        container.appendChild(card);
+      });
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById('comments-container').innerHTML =
+        `<p class="text-red-500">Error al cargar comentarios.</p>`;
+    }
+  }
